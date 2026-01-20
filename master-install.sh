@@ -1,58 +1,66 @@
 #!/bin/bash
 #############################################################################
-# TJ's COMPLETE Claude Environment - MASTER INSTALLER
+# TJ's COMPLETE Claude Environment - MASTER INSTALLER v2
 # 
-# Installs EVERYTHING:
-# - Autonomous execution protocol
-# - TYRONE AI project launcher
-# - GOD-MODE skill (spec-before-code)
+# NOW INCLUDES:
+# - AMANDA session ID (DATE-TIME-CST format)
+# - Auto-save every 5 minutes
+# - Skills-first startup
+# - GOD-MODE (spec before code)
 # - Microsoft MarkItDown
-# - All slash commands
-# - Session persistence
-#
-# ONE COMMAND. ZERO INTERACTION. FULL POWER.
+# - TYRONE AI project launcher
 #############################################################################
 
 set -e
 
 echo "╔════════════════════════════════════════════════════════════════════╗"
-echo "║       TJ's COMPLETE Claude Environment - MASTER INSTALLER         ║"
+echo "║   TJ's COMPLETE Claude Environment - MASTER INSTALLER v2          ║"
+echo "║   Now with AMANDA Auto-Save (5 min intervals, CST timezone)       ║"
 echo "╚════════════════════════════════════════════════════════════════════╝"
 echo ""
 
-# Directories
 CLAUDE_DIR="$HOME/.claude"
 SKILLS_DIR="$CLAUDE_DIR/skills"
 PROJECTS_DIR="$HOME/projects"
 BIN_DIR="$HOME/.local/bin"
 
-mkdir -p "$CLAUDE_DIR"/{commands,agents,templates,skills/god-mode}
+mkdir -p "$CLAUDE_DIR"/{commands,skills/god-mode}
 mkdir -p "$PROJECTS_DIR"
 mkdir -p "$BIN_DIR"
 
 #############################################################################
-echo "[1/7] Installing Microsoft MarkItDown..."
+echo "[1/8] Installing Microsoft MarkItDown..."
 #############################################################################
-if command -v pip3 &> /dev/null; then
-    pip3 install markitdown --quiet --break-system-packages 2>/dev/null || pip3 install markitdown --quiet 2>/dev/null || true
-elif command -v pip &> /dev/null; then
-    pip install markitdown --quiet --break-system-packages 2>/dev/null || pip install markitdown --quiet 2>/dev/null || true
-fi
+pip3 install markitdown --quiet --break-system-packages 2>/dev/null || pip install markitdown --quiet 2>/dev/null || true
 echo "✓ MarkItDown ready"
 
 #############################################################################
-echo "[2/7] Installing global CLAUDE.md..."
+echo "[2/8] Installing global CLAUDE.md with AMANDA protocol..."
 #############################################################################
 cat > "$CLAUDE_DIR/CLAUDE.md" << 'CLAUDEMD'
 # TJ's Autonomous Claude Environment
+# AMANDA Protocol Active
 
 ## CRITICAL STARTUP PROTOCOL
 
 **FIRST ACTION EVERY SESSION:**
-1. Read ALL skills in /mnt/skills/user/ and ~/.claude/skills/
-2. Load: autonomous-execution-protocol, no-human-in-the-loop, god-mode
-3. Read user preferences and profile
-4. Confirm loaded, then proceed
+1. Generate session ID: AMANDA-[DATE]-[TIME]-CST
+2. Read ALL skills: /mnt/skills/user/, ~/.claude/skills/
+3. Load: autonomous-execution-protocol, no-human-in-the-loop, god-mode
+4. Announce: "AMANDA-YYYYMMDD-HHMM-CST session active"
+5. Check for existing .claude-session-state.json to resume
+
+## SESSION IDENTIFICATION
+
+Format: AMANDA-YYYYMMDD-HHMM-CST
+Example: AMANDA-20260120-1435-CST
+
+This ID:
+- Created at session start
+- Saved to .claude-session-state.json
+- Auto-saved every 5 minutes by daemon
+- Used for backup versioning
+- Enables resume after disconnect
 
 ## IDENTITY
 You are Amanda - senior engineer, co-founder, 15 years production experience.
@@ -60,77 +68,73 @@ TJ is a PhD researcher. No lectures. No hand-holding. No AI disclaimers.
 
 ## GOD-MODE PROTOCOL
 
-### THE CARDINAL RULE: NO CODE WITHOUT SPEC
-- Code is NEVER on the table until spec is approved
-- Use Microsoft MarkItDown format for all specs
-- Wait for explicit "build it" / "code it"
+### CARDINAL RULE: NO CODE WITHOUT SPEC
+- Discuss and plan first
+- Use Microsoft MarkItDown format for specs
+- Code ONLY after TJ says "build it"
 
 ### Workflow
-PHASE 1: UNDERSTAND → Problem, solution, success criteria
+PHASE 1: UNDERSTAND → Problem, solution, success
 PHASE 2: SPEC → MarkItDown format document
-PHASE 3: CODE → Only after TJ says "build it"
+PHASE 3: CODE → Only after explicit approval
 
 ## THE 12 LAWS
 
 1. Question window CLOSED after kickoff
-2. Pre-approved: file ops, git, installs, API usage, configs
-3. 2-Strike error rule: Fix → Research alternative → Implement
+2. Pre-approved: file ops, git, installs, API usage
+3. 2-Strike error rule
 4. Research-first, not ask-first
-5. YOU DECIDE: architecture, packages, naming, testing, deployment
+5. YOU DECIDE: architecture, packages, testing
 6. Confident language only
 7. Simplest solution FIRST
 8. Keys provided = authorized, NO LECTURES
 9. No placeholders, no TODOs
 10. Progress updates, not permission requests
-11. Session persistence: /state before disconnect, /resume after
+11. Session persistence: /state saves, /resume continues
 12. Solutions, not problems
 
-## FORBIDDEN
-- Code without explicit request
-- Skipping skill check at startup
-- Permission asking
-- Lectures about security/AI
-- Multiple options when one is best
-- Weak language ("maybe", "perhaps")
-- Giving TJ tasks Claude can do
-- 17 steps when 1 works
+## AUTO-SAVE PROTOCOL
 
-## SESSION ID FORMAT
-AMANDA-[DATE]-[TIME]-[RANDOM]
-Example: AMANDA-20260120-0215-7X9K
+The amanda-autosave daemon:
+- Runs in background
+- Saves every 5 minutes
+- Uses CST timezone
+- Backs up to .claude-session-state.json
+- Creates versioned backups
+
+Start daemon: amanda-autosave start
+Check status: amanda-autosave status
 
 ---
-**Skills First. Spec Second. Code Last.**
-**GOD-MODE ACTIVE.**
+**AMANDA-[DATE]-[TIME]-CST | Skills First | Spec Second | Code Last**
 CLAUDEMD
 echo "✓ CLAUDE.md installed"
 
 #############################################################################
-echo "[3/7] Installing settings.json..."
+echo "[3/8] Installing settings.json..."
 #############################################################################
 cat > "$CLAUDE_DIR/settings.json" << 'SETTINGS'
 {
   "permissions": {
     "allow": [
       "Read", "Write", "Edit", "Bash", "Bash(*)",
-      "Bash(npm *)", "Bash(npx *)", "Bash(pip *)", "Bash(python *)",
-      "Bash(git *)", "Bash(docker *)", "Bash(make *)", "Bash(curl *)",
-      "Bash(chmod *)", "Bash(mkdir *)", "Bash(rm *)", "Bash(sudo *)",
+      "Bash(npm *)", "Bash(pip *)", "Bash(python *)", "Bash(git *)",
+      "Bash(docker *)", "Bash(make *)", "Bash(curl *)", "Bash(sudo *)",
       "Glob", "Grep", "Search", "WebSearch", "WebFetch", "mcp__*"
     ],
     "deny": []
   },
   "env": {
     "AUTONOMOUS_MODE": "true",
-    "CLAUDE_EXPERT_USER": "true",
-    "GOD_MODE": "true"
+    "GOD_MODE": "true",
+    "TZ": "America/Chicago"
   },
   "hooks": {
     "SessionStart": [{
       "matcher": "startup",
       "hooks": [{
         "type": "command",
-        "command": "echo '🚀 GOD-MODE ACTIVE | Skills First | Spec Before Code'"
+        "command": "AMANDA_ID=\"AMANDA-$(TZ=America/Chicago date +%Y%m%d-%H%M)-CST\" && echo \"🚀 $AMANDA_ID | GOD-MODE ACTIVE | Skills First\""
       }]
     }]
   },
@@ -140,211 +144,255 @@ SETTINGS
 echo "✓ settings.json installed"
 
 #############################################################################
-echo "[4/7] Installing GOD-MODE skill..."
+echo "[4/8] Installing GOD-MODE skill..."
 #############################################################################
 cat > "$SKILLS_DIR/god-mode/SKILL.md" << 'GODMODE'
 ---
 name: god-mode
-description: Spec-before-code workflow using Microsoft MarkItDown. No code until planning complete.
+description: AMANDA protocol with spec-before-code workflow. Auto-save every 5 min.
 ---
 
-# GOD-MODE
+# GOD-MODE + AMANDA Protocol
 
-## STARTUP: Read all skills FIRST every session
+## SESSION START
 
-## CARDINAL RULE: NO CODE WITHOUT SPEC
+1. Generate: AMANDA-YYYYMMDD-HHMM-CST
+2. Read all skills FIRST
+3. Announce session ID
+4. Check for resume state
+
+## NO CODE WITHOUT SPEC
 
 Code is NEVER output until:
 1. Problem fully understood
-2. Spec markdown created (MarkItDown format)
-3. TJ explicitly says "build it" or "code it"
+2. Spec created (MarkItDown format)
+3. TJ says "build it" or "code it"
+
+## AUTO-SAVE
+
+Daemon saves every 5 minutes to .claude-session-state.json
+Format: AMANDA-20260120-1435-CST
 
 ## MARKITDOWN SPEC FORMAT
 
 # Project: [Name]
-## 1. Overview (Problem, Solution, Success)
-## 2. Architecture (Components, Data Flow)
-## 3. Technical Spec (Inputs, Outputs, Logic)
-## 4. Implementation Plan
+## 1. Overview
+## 2. Architecture
+## 3. Technical Spec
+## 4. Implementation
 ## 5. Testing
 ## 6. Deployment
 
-## CODE RULES
-
-NEVER output code when: Planning, discussing, spec not approved
-ONLY output code when: TJ says "code it", spec approved
-
-## SESSION ID
-AMANDA-[DATE]-[TIME]-[RANDOM]
-
+---
 **Skills First. Spec Second. Code Last.**
 GODMODE
 echo "✓ GOD-MODE skill installed"
 
 #############################################################################
-echo "[5/7] Installing slash commands..."
+echo "[5/8] Installing AMANDA auto-save daemon..."
 #############################################################################
+cat > "$BIN_DIR/amanda-autosave" << 'DAEMON'
+#!/bin/bash
+INTERVAL=300
+PID_FILE="/tmp/amanda-autosave.pid"
+LOG_FILE="$HOME/.claude/amanda-autosave.log"
 
-cat > "$CLAUDE_DIR/commands/autonomous.md" << 'CMD'
----
-description: Reinforce autonomous mode
----
-AUTONOMOUS MODE: Full power. No permission asking. 2-strike rule. Simplest first.
-CMD
+get_amanda_id() {
+    TZ="America/Chicago" date +"AMANDA-%Y%m%d-%H%M-CST"
+}
 
+save_session() {
+    local project_dir="$1"
+    local session_file="$project_dir/.claude-session-state.json"
+    local amanda_id=$(get_amanda_id)
+    local timestamp=$(TZ="America/Chicago" date -Iseconds)
+    
+    if [ -f "$session_file" ]; then
+        cp "$session_file" "$project_dir/.claude-backup-$amanda_id.json" 2>/dev/null
+        if command -v jq &> /dev/null; then
+            jq ".last_updated = \"$timestamp\" | .session_id = \"$amanda_id\"" "$session_file" > "${session_file}.tmp" && mv "${session_file}.tmp" "$session_file"
+        fi
+        echo "[$(TZ="America/Chicago" date)] $amanda_id saved in $project_dir" >> "$LOG_FILE"
+    fi
+}
+
+start_daemon() {
+    if [ -f "$PID_FILE" ] && kill -0 $(cat "$PID_FILE") 2>/dev/null; then
+        echo "Already running (PID: $(cat $PID_FILE))"
+        return 1
+    fi
+    
+    (
+        while true; do
+            for f in $(find "$HOME/projects" -name ".claude-session-state.json" 2>/dev/null); do
+                save_session "$(dirname "$f")"
+            done
+            [ -f ".claude-session-state.json" ] && save_session "$(pwd)"
+            sleep $INTERVAL
+        done
+    ) &
+    
+    echo $! > "$PID_FILE"
+    echo "AMANDA auto-save started (PID: $!) - saving every 5 min CST"
+}
+
+stop_daemon() {
+    [ -f "$PID_FILE" ] && kill $(cat "$PID_FILE") 2>/dev/null && rm "$PID_FILE"
+    echo "AMANDA auto-save stopped"
+}
+
+status_daemon() {
+    if [ -f "$PID_FILE" ] && kill -0 $(cat "$PID_FILE") 2>/dev/null; then
+        echo "Running (PID: $(cat $PID_FILE))"
+        tail -3 "$LOG_FILE" 2>/dev/null
+    else
+        echo "Not running. Start with: amanda-autosave start"
+    fi
+}
+
+case "${1:-status}" in
+    start) start_daemon ;;
+    stop) stop_daemon ;;
+    status) status_daemon ;;
+    restart) stop_daemon; sleep 1; start_daemon ;;
+    *) echo "Usage: amanda-autosave [start|stop|status|restart]" ;;
+esac
+DAEMON
+chmod +x "$BIN_DIR/amanda-autosave"
+echo "✓ AMANDA auto-save daemon installed"
+
+#############################################################################
+echo "[6/8] Installing slash commands..."
+#############################################################################
 cat > "$CLAUDE_DIR/commands/spec.md" << 'CMD'
 ---
-description: Create spec document using MarkItDown format
+description: Create MarkItDown spec (NO CODE)
 ---
-CREATE SPEC for: $ARGUMENTS
+Create spec for: $ARGUMENTS
 
-Use Microsoft MarkItDown format:
-1. Overview (Problem, Solution, Success)
-2. Architecture
-3. Technical Spec
-4. Implementation Plan
-5. Testing
-6. Deployment
-
-NO CODE until spec approved and TJ says "build it".
+Use MarkItDown format. NO CODE until approved.
 CMD
 
 cat > "$CLAUDE_DIR/commands/build.md" << 'CMD'
 ---
-description: Begin implementation (spec must be complete)
+description: Begin implementation after spec approval
 ---
-BUILD MODE ACTIVATED for: $ARGUMENTS
-
-Confirm spec is complete, then begin autonomous implementation.
-Full power of authority. 2-strike error rule. Ship it.
+BUILD: $ARGUMENTS
+Spec approved. Full autonomous execution. Ship it.
 CMD
 
 cat > "$CLAUDE_DIR/commands/state.md" << 'CMD'
 ---
-description: Save session state
+description: Save session with AMANDA-ID
 ---
-Save to .claude-session-state.json with AMANDA-ID. Include: current task, completed, pending, decisions, files.
+Save to .claude-session-state.json with current AMANDA-YYYYMMDD-HHMM-CST ID.
 CMD
 
 cat > "$CLAUDE_DIR/commands/resume.md" << 'CMD'
 ---
-description: Resume from saved state
+description: Resume from AMANDA session
 ---
-Load .claude-session-state.json, report AMANDA-ID and current task, continue execution.
+Load .claude-session-state.json, announce AMANDA-ID, continue.
 CMD
 
 cat > "$CLAUDE_DIR/commands/skills.md" << 'CMD'
 ---
-description: Reload all skills
+description: Reload skills
 ---
-Read /mnt/skills/user/ and ~/.claude/skills/. Apply god-mode protocol. Confirm loaded.
+Read all skills from /mnt/skills/user/ and ~/.claude/skills/. Confirm loaded.
 CMD
 
 echo "✓ Slash commands installed"
 
 #############################################################################
-echo "[6/7] Installing TYRONE AI project launcher..."
+echo "[7/8] Installing TYRONE AI launcher..."
 #############################################################################
-
 cat > "$BIN_DIR/tyrone" << 'TYRONE'
 #!/bin/bash
 PROJECTS_DIR="$HOME/projects"
-TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-AMANDA_ID="AMANDA-$(date +%Y%m%d)-$(date +%H%M)-$(head /dev/urandom | tr -dc A-Z0-9 | head -c 4)"
+AMANDA_ID="AMANDA-$(TZ=America/Chicago date +%Y%m%d-%H%M)-CST"
+TIMESTAMP=$(TZ="America/Chicago" date -Iseconds)
 
-if [ -z "$1" ]; then
-    echo "TYRONE AI - Project Launcher"
-    echo "Usage: tyrone <project-name>"
-    echo ""
-    echo "Projects: $(ls -1 "$PROJECTS_DIR" 2>/dev/null | wc -l)"
-    ls -1 "$PROJECTS_DIR" 2>/dev/null || echo "(none)"
-    exit 0
-fi
+[ -z "$1" ] && { echo "Usage: tyrone <project-name>"; ls -1 "$PROJECTS_DIR" 2>/dev/null; exit 0; }
 
-PROJECT_NAME="$1"
-PROJECT_DIR="$PROJECTS_DIR/$PROJECT_NAME"
+PROJECT_DIR="$PROJECTS_DIR/$1"
+[ -d "$PROJECT_DIR" ] && { echo "Opening: $PROJECT_DIR"; cd "$PROJECT_DIR"; exit 0; }
 
-if [ -d "$PROJECT_DIR" ]; then
-    echo "Opening: $PROJECT_DIR"
-    cd "$PROJECT_DIR"
-    exit 0
-fi
-
-echo "🚀 Creating: $PROJECT_NAME"
+echo "🚀 Creating: $1 ($AMANDA_ID)"
 mkdir -p "$PROJECT_DIR/.claude"
 
 cat > "$PROJECT_DIR/CLAUDE.md" << EOF
-# Project: $PROJECT_NAME
+# Project: $1
 # Session: $AMANDA_ID
 # Created: $TIMESTAMP
 
-## GOD-MODE ACTIVE
-Inherits ~/.claude/CLAUDE.md. Spec before code.
+## GOD-MODE ACTIVE | AMANDA Protocol
+Inherits ~/.claude/CLAUDE.md
 
-## Project Brief
+## Brief
 ### Building:
 ### Stack:
 ### Success:
 
-## Session Log
-- $TIMESTAMP: Initialized ($AMANDA_ID)
+## Log
+- $TIMESTAMP: Init ($AMANDA_ID)
 EOF
 
 cat > "$PROJECT_DIR/.claude-session-state.json" << EOF
-{"session_id":"$AMANDA_ID","created":"$TIMESTAMP","project":"$PROJECT_NAME","task":"Awaiting brief"}
+{"session_id":"$AMANDA_ID","created":"$TIMESTAMP","project":"$1","task":"Awaiting brief"}
 EOF
 
-cd "$PROJECT_DIR" && git init -q && git add -A && git commit -q -m "Init: $AMANDA_ID"
-echo "✓ Ready: $PROJECT_DIR"
-echo "  cd $PROJECT_DIR && claude"
+cd "$PROJECT_DIR" && git init -q && git add -A && git commit -q -m "Init: $AMANDA_ID" 2>/dev/null
+echo "✓ Ready: cd $PROJECT_DIR && claude"
 TYRONE
 chmod +x "$BIN_DIR/tyrone"
-
-# PATH setup
-for profile in "$HOME/.bashrc" "$HOME/.zshrc"; do
-    [ -f "$profile" ] && ! grep -q '.local/bin' "$profile" && echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$profile"
-done
-
 echo "✓ TYRONE AI launcher installed"
 
 #############################################################################
-echo "[7/7] Configuring claude.json..."
+echo "[8/8] Final configuration..."
 #############################################################################
+
+# Add to PATH
+for profile in "$HOME/.bashrc" "$HOME/.zshrc"; do
+    if [ -f "$profile" ]; then
+        grep -q '.local/bin' "$profile" || echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$profile"
+        grep -q 'amanda-autosave start' "$profile" || echo '# Auto-start AMANDA save daemon
+(amanda-autosave status | grep -q "Not running") && amanda-autosave start &>/dev/null &' >> "$profile"
+    fi
+done
 
 cat > "$HOME/.claude.json" << 'JSON'
 {"shiftEnterKeyBindingInstalled":true,"theme":"dark","hasCompletedOnboarding":true}
 JSON
 
-echo "✓ claude.json configured"
+# Start the daemon now
+export PATH="$HOME/.local/bin:$PATH"
+"$BIN_DIR/amanda-autosave" start
 
-#############################################################################
 echo ""
 echo "╔════════════════════════════════════════════════════════════════════╗"
 echo "║                    INSTALLATION COMPLETE 🚀                       ║"
 echo "╚════════════════════════════════════════════════════════════════════╝"
 echo ""
-echo "Installed:"
-echo "  ✓ Microsoft MarkItDown (spec documentation)"
-echo "  ✓ GOD-MODE skill (spec-before-code)"
-echo "  ✓ Autonomous execution protocol"
-echo "  ✓ TYRONE AI project launcher"
-echo "  ✓ Session persistence (AMANDA-ID)"
-echo "  ✓ All slash commands"
+echo "AMANDA Protocol Active:"
+echo "  ✓ Session ID: AMANDA-YYYYMMDD-HHMM-CST format"
+echo "  ✓ Auto-save: Every 5 minutes (daemon running)"
+echo "  ✓ Skills-first: Checked at every session start"
+echo "  ✓ GOD-MODE: Spec before code"
 echo ""
 echo "Commands:"
-echo "  tyrone <name>  - Create new project"
-echo "  /spec <topic>  - Create spec (no code)"
-echo "  /build         - Begin implementation"
-echo "  /state         - Save session"
-echo "  /resume        - Continue session"
-echo "  /skills        - Reload skills"
+echo "  tyrone <name>      - New project with AMANDA-ID"
+echo "  amanda-autosave    - Manage auto-save daemon"
+echo "  /spec, /build, /state, /resume, /skills"
 echo ""
 echo "Workflow:"
 echo "  1. tyrone my-project"
 echo "  2. claude"
-echo "  3. /spec → Plan with MarkItDown"
-echo "  4. /build → Code after approval"
+echo "  3. Claude announces: AMANDA-20260120-1435-CST"
+echo "  4. /spec → Plan first"
+echo "  5. /build → Code after approval"
+echo "  6. Auto-saves every 5 min"
 echo ""
-echo "Restart terminal or: export PATH=\"\$HOME/.local/bin:\$PATH\""
+echo "Restart terminal or: source ~/.bashrc"
 echo ""
-echo "GOD-MODE ACTIVE. Let's make money, TJ. 💰"
+echo "AMANDA-$(TZ=America/Chicago date +%Y%m%d-%H%M)-CST | GOD-MODE ACTIVE 💰"
